@@ -2,7 +2,7 @@ package mapper
 
 import (
 	"go-server/internal/user/domain"
-	store "go-server/internal/user/infra"
+	store "go-server/internal/user/infra/store"
 )
 
 func ToDBUser(user domain.User) store.User {

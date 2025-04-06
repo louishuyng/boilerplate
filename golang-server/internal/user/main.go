@@ -3,36 +3,36 @@ package user
 import (
 	"go-server/internal/common"
 	"go-server/internal/user/api"
+	"go-server/internal/user/application"
 	"go-server/internal/user/application/service"
 	"go-server/internal/user/domain"
 	"go-server/internal/user/infra/events"
 	"go-server/internal/user/infra/store"
-	"net/http"
 )
 
 var _ common.App = (*UserApp)(nil)
 
 type UserApp struct {
-	router  *http.ServeMux
-	service *service.UserService
+	server  common.BasicServer
+	service application.UserService
 	event   <-chan common.Event
 }
 
-func NewUserApp(router *http.ServeMux, event <-chan common.Event) *UserApp {
+func NewUserApp(server common.BasicServer, event <-chan common.Event) *UserApp {
 	store := store.NewPostgresStore()
 	domain := domain.NewUserDomain()
 
 	service := service.NewUserService(store, domain)
 
 	return &UserApp{
-		router:  router,
+		server:  server,
 		service: service,
 		event:   event,
 	}
 }
 
 func (userApp *UserApp) RunServer() error {
-	api.NewUserApi(userApp.router, userApp.service)
+	api.NewUserApi(userApp.server, userApp.service)
 
 	return nil
 }

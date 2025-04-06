@@ -3,15 +3,14 @@ package main
 import (
 	"go-server/internal/common"
 	"go-server/internal/user"
-	"log"
-	"net/http"
 )
 
 func main() {
-	router := http.NewServeMux()
+	server := NewServer()
+
 	event := common.NewEventChannel()
 
-	userApp := user.NewUserApp(router, event)
+	userApp := user.NewUserApp(server, event)
 
 	_ = userApp.RunServer()
 
@@ -19,5 +18,5 @@ func main() {
 		_ = userApp.RunDomainEventLoop()
 	}()
 
-	log.Fatal(http.ListenAndServe(":5001", router))
+	server.Start()
 }
