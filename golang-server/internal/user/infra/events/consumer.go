@@ -11,5 +11,5 @@ type UserCreatedEvent struct {
 
 type UserEventConsumer interface {
 	StartEventLoop()
-	handleUserCreatedEvent(event UserCreatedEvent) error
+	HandleUserCreatedEvent(event UserCreatedEvent) error
 }

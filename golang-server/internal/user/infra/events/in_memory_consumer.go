@@ -9,7 +9,7 @@ import (
 var _ UserEventConsumer = &InMemoryUserEventConsumer{}
 
 type InMemoryUserEventConsumer struct {
-	events      <-chan common.Event
+	events      chan common.Event
 	application application.UserService
 }
 
@@ -32,7 +32,7 @@ func (inMemory *InMemoryUserEventConsumer) StartEventLoop() {
 
 				userCreatedEvent := UserCreatedEvent{}
 
-				_ = inMemory.handleUserCreatedEvent(userCreatedEvent)
+				_ = inMemory.HandleUserCreatedEvent(userCreatedEvent)
 			}
 		}
 
@@ -40,7 +40,7 @@ func (inMemory *InMemoryUserEventConsumer) StartEventLoop() {
 	}
 }
 
-func (inMemory *InMemoryUserEventConsumer) handleUserCreatedEvent(event UserCreatedEvent) error {
+func (inMemory *InMemoryUserEventConsumer) HandleUserCreatedEvent(event UserCreatedEvent) error {
 	command := application.CreateUserCommand{
 		Name: event.Name,
 	}
