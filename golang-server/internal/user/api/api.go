@@ -7,6 +7,7 @@ import (
 
 type UserApi struct {
 	service application.UserService
+	http.Handler
 }
 
 func NewUserApi(
@@ -16,6 +17,7 @@ func NewUserApi(
 	u := new(UserApi)
 
 	u.service = service
+	u.Handler = router
 
 	router.Handle("/users/", http.HandlerFunc(u.createUser))
 
@@ -23,5 +25,11 @@ func NewUserApi(
 }
 
 func (u *UserApi) createUser(w http.ResponseWriter, r *http.Request) {
-	// Call service
+	command := application.CreateUserCommand{
+		Name: "John",
+	}
+
+	_, _ = u.service.CreateUser(command)
+
+	w.WriteHeader(http.StatusCreated)
 }
