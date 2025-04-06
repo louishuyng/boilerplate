@@ -9,7 +9,7 @@ import (
 var _ UserEventConsumer = &InMemoryUserEventConsumer{}
 
 type InMemoryUserEventConsumer struct {
-	events      chan common.Event
+	events      <-chan common.Event
 	application application.UserService
 }
 
