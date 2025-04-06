@@ -5,6 +5,6 @@ type Event struct {
 	Body struct{}
 }
 
-func NewEventChannel() <-chan Event {
+func NewEventChannel() chan Event {
 	return make(chan Event, 100)
 }
