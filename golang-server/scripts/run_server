@@ -1,0 +1,3 @@
+#!/bin/bash
+
+air --build.cmd "go build -o bin/server cmd/webserver/main.go" --build.bin "./bin/server"
