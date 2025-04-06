@@ -14,7 +14,10 @@ func main() {
 	userApp := user.NewUserApp(router, event)
 
 	_ = userApp.RunServer()
-	_ = userApp.RunDomainEventLoop()
+
+	go func() {
+		_ = userApp.RunDomainEventLoop()
+	}()
 
 	log.Fatal(http.ListenAndServe(":5001", router))
 }
