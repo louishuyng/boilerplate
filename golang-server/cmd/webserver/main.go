@@ -11,7 +11,10 @@ func main() {
 	router := http.NewServeMux()
 	event := common.NewEventChannel()
 
-	user.NewUserApp(router, event).Run()
+	userApp := user.NewUserApp(router, event)
+
+	_ = userApp.RunServer()
+	_ = userApp.RunDomainEventLoop()
 
 	log.Fatal(http.ListenAndServe(":5001", router))
 }

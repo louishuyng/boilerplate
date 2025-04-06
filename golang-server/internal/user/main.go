@@ -10,6 +10,8 @@ import (
 	"net/http"
 )
 
+var _ common.App = (*UserApp)(nil)
+
 type UserApp struct {
 	router  *http.ServeMux
 	service *service.UserService
@@ -29,19 +31,14 @@ func NewUserApp(router *http.ServeMux, event <-chan common.Event) *UserApp {
 	}
 }
 
-func (userApp *UserApp) Run() error {
-	userApp.registerUserServer()
-	userApp.runDomainEventLoop()
-
-	return nil
-}
-
-func (userApp *UserApp) registerUserServer() error {
+func (userApp *UserApp) RunServer() error {
 	api.NewUserApi(userApp.router, userApp.service)
 
 	return nil
 }
 
-func (userApp *UserApp) runDomainEventLoop() {
+func (userApp *UserApp) RunDomainEventLoop() error {
 	events.NewInMemoryUserEventConsumer(userApp.event, userApp.service).StartEventLoop()
+
+	return nil
 }
