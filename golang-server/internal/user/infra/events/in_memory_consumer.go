@@ -9,23 +9,24 @@ import (
 var _ UserEventConsumer = &InMemoryUserEventConsumer{}
 
 type InMemoryUserEventConsumer struct {
-	events      <-chan common.Event
+	event       <-chan common.Event
 	application application.UserService
 }
 
 func NewInMemoryUserEventConsumer(
-	events <-chan common.Event,
+	event <-chan common.Event,
 	application application.UserService,
 ) *InMemoryUserEventConsumer {
 	return &InMemoryUserEventConsumer{
-		events:      events,
+		event:       event,
 		application: application,
 	}
 }
 
 func (inMemory *InMemoryUserEventConsumer) StartEventLoop() {
 	for {
-		for event := range inMemory.events {
+		select {
+		case event := <-inMemory.event:
 			switch event.Name {
 			case UserCreatedEventName:
 				// Parse event to UserCreatedEvent
@@ -34,9 +35,9 @@ func (inMemory *InMemoryUserEventConsumer) StartEventLoop() {
 
 				_ = inMemory.HandleUserCreatedEvent(userCreatedEvent)
 			}
-		}
 
-		time.Sleep(1 * time.Second)
+		case <-time.After(1 * time.Second):
+		}
 	}
 }
 
