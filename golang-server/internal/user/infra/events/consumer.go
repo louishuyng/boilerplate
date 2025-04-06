@@ -1,15 +1,8 @@
 package events
 
-type EventName string
-
 const (
-	UserCreatedEventName EventName = "UserCreatedEvent"
+	UserCreatedEventName = "UserCreatedEvent"
 )
-
-type Event struct {
-	Name EventName
-	Body struct{}
-}
 
 type UserCreatedEvent struct {
 	Id   string
@@ -17,6 +10,6 @@ type UserCreatedEvent struct {
 }
 
 type UserEventConsumer interface {
-	EventLoop()
-	HandleUserCreatedEvent(event UserCreatedEvent) error
+	StartEventLoop()
+	handleUserCreatedEvent(event UserCreatedEvent) error
 }

@@ -1,6 +1,7 @@
 package events
 
 import (
+	"go-server/internal/common"
 	"go-server/internal/user/application"
 	"time"
 )
@@ -8,30 +9,21 @@ import (
 var _ UserEventConsumer = &InMemoryUserEventConsumer{}
 
 type InMemoryUserEventConsumer struct {
-	events      chan Event
+	events      <-chan common.Event
 	application application.UserService
 }
 
 func NewInMemoryUserEventConsumer(
+	events <-chan common.Event,
 	application application.UserService,
 ) *InMemoryUserEventConsumer {
 	return &InMemoryUserEventConsumer{
-		events:      make(chan Event, 100),
+		events:      events,
 		application: application,
 	}
 }
 
-func (inMemory *InMemoryUserEventConsumer) HandleUserCreatedEvent(event UserCreatedEvent) error {
-	command := application.CreateUserCommand{
-		Name: event.Name,
-	}
-
-	_, _ = inMemory.application.CreateUser(command)
-
-	return nil
-}
-
-func (inMemory *InMemoryUserEventConsumer) EventLoop() {
+func (inMemory *InMemoryUserEventConsumer) StartEventLoop() {
 	for {
 		for event := range inMemory.events {
 			switch event.Name {
@@ -40,10 +32,20 @@ func (inMemory *InMemoryUserEventConsumer) EventLoop() {
 
 				userCreatedEvent := UserCreatedEvent{}
 
-				_ = inMemory.HandleUserCreatedEvent(userCreatedEvent)
+				_ = inMemory.handleUserCreatedEvent(userCreatedEvent)
 			}
 		}
 
 		time.Sleep(1 * time.Second)
 	}
+}
+
+func (inMemory *InMemoryUserEventConsumer) handleUserCreatedEvent(event UserCreatedEvent) error {
+	command := application.CreateUserCommand{
+		Name: event.Name,
+	}
+
+	_, _ = inMemory.application.CreateUser(command)
+
+	return nil
 }

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"go-server/internal/common"
 	"go-server/internal/user"
 	"log"
 	"net/http"
@@ -8,8 +9,9 @@ import (
 
 func main() {
 	router := http.NewServeMux()
+	event := common.NewEventChannel()
 
-	user.RegisterUserServer(router)
+	user.NewUserApp(router, event).Run()
 
 	log.Fatal(http.ListenAndServe(":5001", router))
 }

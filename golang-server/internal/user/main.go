@@ -1,6 +1,7 @@
 package user
 
 import (
+	"go-server/internal/common"
 	"go-server/internal/user/api"
 	"go-server/internal/user/application/service"
 	"go-server/internal/user/domain"
@@ -12,9 +13,10 @@ import (
 type UserApp struct {
 	router  *http.ServeMux
 	service *service.UserService
+	event   <-chan common.Event
 }
 
-func NewUserApp(router *http.ServeMux) *UserApp {
+func NewUserApp(router *http.ServeMux, event <-chan common.Event) *UserApp {
 	store := store.NewPostgresStore()
 	domain := domain.NewUserDomain()
 
@@ -23,6 +25,7 @@ func NewUserApp(router *http.ServeMux) *UserApp {
 	return &UserApp{
 		router:  router,
 		service: service,
+		event:   event,
 	}
 }
 
@@ -40,5 +43,5 @@ func (userApp *UserApp) registerUserServer() error {
 }
 
 func (userApp *UserApp) runDomainEventLoop() {
-	events.NewInMemoryUserEventConsumer(userApp.service).EventLoop()
+	events.NewInMemoryUserEventConsumer(userApp.event, userApp.service).StartEventLoop()
 }
