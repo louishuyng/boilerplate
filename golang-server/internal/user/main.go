@@ -1,11 +1,19 @@
 package user
 
-import "net/http"
+import (
+	"go-server/internal/user/api"
+	"go-server/internal/user/application/service"
+	"go-server/internal/user/domain"
+	store "go-server/internal/user/infra"
+	"net/http"
+)
 
 func RegisterUserServer(router *http.ServeMux) error {
-	// Init real actions
+	store := store.NewPostgresStore()
+	domain := domain.NewUserDomain()
 
-	// NewUserApi()
+	service := service.NewUserService(store, domain)
+	api.NewUserApi(router, service)
 
 	return nil
 }

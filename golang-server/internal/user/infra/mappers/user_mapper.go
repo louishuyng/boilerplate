@@ -2,7 +2,7 @@ package mapper
 
 import (
 	"go-server/internal/user/domain"
-	"go-server/internal/user/infra"
+	store "go-server/internal/user/infra"
 )
 
 func ToDBUser(user domain.User) store.User {
@@ -14,6 +14,7 @@ func ToDBUser(user domain.User) store.User {
 
 func FromDBUser(user store.User) domain.User {
 	return domain.User{
+		Id:   user.ID,
 		Name: user.Name,
 	}
 }

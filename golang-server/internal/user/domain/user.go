@@ -1,5 +1,10 @@
 package domain
 
-type UserEntity interface {
-	GetID() int
+type User struct {
+	Id   int
+	Name string
+}
+
+func (d *Domain) GetID() int {
+	return 0
 }

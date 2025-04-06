@@ -1,15 +1,10 @@
 package domain
 
-var _ UserEntity = (*User)(nil)
+var _ UserDomain = (*Domain)(nil)
 
-type User struct {
-	Name string
+type Domain struct {
 }
 
-func NewUser(name string) *User {
-	return &User{}
-}
-
-func (c *User) GetID() int {
-	return 0
+func NewUserDomain() *Domain {
+	return &Domain{}
 }
