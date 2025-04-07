@@ -12,9 +12,8 @@ func main() {
 
 	userApp := user.NewUserApp(server, event)
 
-	_ = userApp.RunServer()
+	_ = userApp.RegisterAPI()
+	_ = userApp.RegisterDomainEvent()
 
-	go func() {
-		_ = userApp.RunDomainEventLoop()
-	}()
+	server.Start()
 }
