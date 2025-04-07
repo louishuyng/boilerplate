@@ -10,7 +10,7 @@ func main() {
 
 	event := common.NewEventChannel()
 
-	userApp := user.NewUserApp(server, event)
+	userApp := user.NewApp(server, event)
 
 	_ = userApp.RegisterAPI()
 	_ = userApp.RegisterDomainEvent()

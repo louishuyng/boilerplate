@@ -10,34 +10,34 @@ import (
 	"go-server/internal/user/infra/store"
 )
 
-var _ common.App = (*UserApp)(nil)
+var _ common.App = (*App)(nil)
 
-type UserApp struct {
+type App struct {
 	server  common.BasicServer
 	service application.UserService
 	event   <-chan common.Event
 }
 
-func NewUserApp(server common.BasicServer, event <-chan common.Event) *UserApp {
+func NewApp(server common.BasicServer, event <-chan common.Event) *App {
 	store := store.NewPostgresStore()
 	domain := domain.NewUserDomain()
 
 	service := service.NewUserService(store, domain)
 
-	return &UserApp{
+	return &App{
 		server:  server,
 		service: service,
 		event:   event,
 	}
 }
 
-func (userApp *UserApp) RegisterAPI() error {
+func (userApp *App) RegisterAPI() error {
 	api.NewUserApi(userApp.server, userApp.service)
 
 	return nil
 }
 
-func (userApp *UserApp) RegisterDomainEvent() error {
+func (userApp *App) RegisterDomainEvent() error {
 	go func() {
 		events.NewInMemoryUserEventConsumer(userApp.event, userApp.service).StartEventLoop()
 
