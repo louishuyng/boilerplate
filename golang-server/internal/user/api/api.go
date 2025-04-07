@@ -20,6 +20,7 @@ func NewUserApi(
 	u.service = service
 
 	server.GET("/users", u.createUser)
+	server.POST("/users", u.createUser)
 
 	return u
 }
