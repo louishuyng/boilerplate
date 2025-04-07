@@ -17,6 +17,4 @@ func main() {
 	go func() {
 		_ = userApp.RunDomainEventLoop()
 	}()
-
-	server.Start()
 }

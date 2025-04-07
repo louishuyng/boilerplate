@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"flag"
+	"go-server/internal/common"
 	"log"
 	"net/http"
 	"os"
@@ -15,6 +16,8 @@ import (
 type Server struct {
 	router *mux.Router
 }
+
+var _ common.BasicServer = (*Server)(nil)
 
 func NewServer() *Server {
 	return &Server{

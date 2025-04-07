@@ -33,6 +33,7 @@ func NewUserApp(server common.BasicServer, event <-chan common.Event) *UserApp {
 
 func (userApp *UserApp) RunServer() error {
 	api.NewUserApi(userApp.server, userApp.service)
+	userApp.server.Start()
 
 	return nil
 }
