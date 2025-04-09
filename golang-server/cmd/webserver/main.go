@@ -1,19 +1,42 @@
 package main
 
 import (
-	"go-server/internal/common"
-	"go-server/internal/user"
+	"rz-server/internal/app/example"
+	"rz-server/internal/common/interfaces"
+	"rz-server/internal/common/message_brokers"
 )
 
 func main() {
-	server := NewServer()
+	log := NewLog()
 
-	event := common.NewEventChannel()
+	util := interfaces.Util{
+		Log:    NewLog(),
+		Logger: log.ErrorLogger,
+	}
 
-	userApp := user.NewApp(server, event)
+	server := NewServer(&util)
+	event := message_brokers.NewEventChannel()
 
-	_ = userApp.RegisterAPI()
-	_ = userApp.RegisterDomainEvent()
+	cmd := makeCMD(server, event, &util)
 
-	server.Start()
+	RegisterApp(example.NewServerApp(&cmd))
+
+	go func() {
+		server.Start()
+	}()
+
+	server.WaitForShutdown()
+}
+
+func RegisterApp(app interfaces.App) {
+	_ = app.RegisterAPI()
+	_ = app.RegisterDomainEvent()
+}
+
+func makeCMD(server interfaces.Server, event <-chan interfaces.Event, util *interfaces.Util) interfaces.CMD {
+	return interfaces.CMD{
+		Server:       server,
+		ConsumeEvent: event,
+		Util:         util,
+	}
 }

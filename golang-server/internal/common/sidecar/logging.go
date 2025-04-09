@@ -1,0 +1,5 @@
+package sidecar
+
+func NewLog() {
+
+}
