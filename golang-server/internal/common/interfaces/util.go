@@ -14,13 +14,14 @@ const (
 type LogData map[string]any
 
 type LogUtil interface {
-	Info(message string, data LogData)
-	Debug(message string, data LogData)
-	Warn(message string, data LogData)
-	Error(message string, data LogData)
+	Info(message string, data ...LogData)
+	Debug(message string, data ...LogData)
+	Warn(message string, data ...LogData)
+	Error(message string, data ...LogData)
 }
 
 type Util struct {
-	Log    LogUtil
-	Logger *log.Logger
+	Log         LogUtil
+	Logger      *log.Logger
+	Environment Environment
 }

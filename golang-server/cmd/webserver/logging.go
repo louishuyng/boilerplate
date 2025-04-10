@@ -27,18 +27,18 @@ func NewLog() *Log {
 	}
 }
 
-func (l *Log) Info(message string, data interfaces.LogData) {
+func (l *Log) Info(message string, data ...interfaces.LogData) {
 	l.logger.Info(message, "data", data)
 }
 
-func (l *Log) Debug(message string, data interfaces.LogData) {
+func (l *Log) Debug(message string, data ...interfaces.LogData) {
 	l.logger.Debug(message, "data", data)
 }
 
-func (l *Log) Warn(message string, data interfaces.LogData) {
+func (l *Log) Warn(message string, data ...interfaces.LogData) {
 	l.logger.Warn(message, "data", data)
 }
 
-func (l *Log) Error(message string, data interfaces.LogData) {
+func (l *Log) Error(message string, data ...interfaces.LogData) {
 	l.logger.Error(message, "data", data)
 }

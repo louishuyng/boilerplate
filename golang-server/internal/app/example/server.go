@@ -7,7 +7,7 @@ import (
 	"rz-server/internal/app/example/application/service"
 	"rz-server/internal/app/example/domain"
 	"rz-server/internal/app/example/infra/events"
-	"rz-server/internal/app/example/infra/store"
+	"rz-server/internal/app/example/infra/store/sql"
 	"rz-server/internal/common/interfaces"
 	"rz-server/internal/common/middlewares"
 )
@@ -22,7 +22,7 @@ type App struct {
 }
 
 func NewServerApp(cmd *interfaces.CMD) *App {
-	store := store.NewPostgresStore()
+	store := sql.NewSqlStore(cmd.SqlDB, cmd.Util.Log)
 	domain := domain.NewExampleDomain()
 
 	service := service.NewExampleService(store, domain)

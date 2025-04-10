@@ -1,7 +1,9 @@
 package store
 
+import "github.com/google/uuid"
+
 type Example struct {
-	ID   int
+	ID   uuid.UUID
 	Name string
 }
 

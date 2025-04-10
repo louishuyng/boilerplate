@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"rz-server/helpers"
 	"rz-server/internal/common/interfaces"
 	"time"
 
@@ -21,14 +22,21 @@ type Server struct {
 
 var _ interfaces.Server = (*Server)(nil)
 
+const TEST = 15 * time.Second
+
 func NewServer(util *interfaces.Util) *Server {
 	router := mux.NewRouter()
 
+	port := util.Environment.GetEnv("server", "PORT")
+	writeTimeoutSeconds := util.Environment.GetEnv("server", "WRITE_TIMEOUT_SECONDS")
+	readTimeoutSeconds := util.Environment.GetEnv("server", "READ_TIMEOUT_SECONDS")
+	idleTimeoutSeconds := util.Environment.GetEnv("server", "IDLE_TIMEOUT_SECONDS")
+
 	server := &http.Server{
-		Addr:         ":" + PORT,
-		WriteTimeout: WRITE_TIMEOUT,
-		ReadTimeout:  READ_TIMEOUT,
-		IdleTimeout:  IDLE_TIMEOUT,
+		Addr:         ":" + port,
+		WriteTimeout: time.Duration(helpers.StrToInt(writeTimeoutSeconds)) * time.Second,
+		ReadTimeout:  time.Duration(helpers.StrToInt(readTimeoutSeconds)) * time.Second,
+		IdleTimeout:  time.Duration(helpers.StrToInt(idleTimeoutSeconds)) * time.Second,
 		Handler:      router, // Pass our instance of gorilla/mux in.
 		ErrorLog:     util.Logger,
 	}
@@ -71,9 +79,11 @@ func (s *Server) RegisterMiddlewares(handlers []func(http.Handler) http.Handler)
 }
 
 func (s *Server) Start() {
+	port := s.util.Environment.GetEnv("server", "PORT")
+
 	s.util.Log.Info("Server started", map[string]any{
 		"address": s.server.Addr,
-		"port":    PORT,
+		"port":    port,
 	})
 
 	if err := s.server.ListenAndServe(); err != nil {
@@ -83,6 +93,9 @@ func (s *Server) Start() {
 
 func (s *Server) WaitForShutdown() {
 	var wait time.Duration
+	gracefulTimeout := s.util.Environment.GetEnv("server", "GRACEFUL_TIMEOUT_SECONDS")
+	GRACEFUL_TIMEOUT := time.Duration(helpers.StrToInt(gracefulTimeout)) * time.Second
+
 	flag.DurationVar(&wait, "graceful-timeout", GRACEFUL_TIMEOUT, "the duration for graceful shutdown")
 	flag.Parse()
 
