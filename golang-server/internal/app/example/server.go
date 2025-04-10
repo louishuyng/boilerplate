@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"net/http"
 	"rz-server/internal/app/example/api"
-	"rz-server/internal/app/example/application"
 	"rz-server/internal/app/example/application/service/example"
 	"rz-server/internal/app/example/domain/example"
 	in_memory_consume_event "rz-server/internal/app/example/infra/events/in_memory_consume"
@@ -16,11 +15,10 @@ import (
 var _ interfaces.ServerApp = (*ServerApp)(nil)
 
 type ServerApp struct {
-	server  interfaces.Server
-	service application.ExampleService
-	event   <-chan interfaces.Event
-	util    *interfaces.Util
-	sqlDB   *sql.DB
+	server interfaces.Server
+	event  <-chan interfaces.Event
+	util   *interfaces.Util
+	sqlDB  *sql.DB
 }
 
 func New(cmd *interfaces.CMD) *ServerApp {
@@ -53,7 +51,12 @@ func (exampleApp *ServerApp) RegisterAPI() error {
 
 func (exampleApp *ServerApp) RegisterDomainEvent() error {
 	go func() {
-		in_memory_consume_event.NewInMemoryExampleEventConsumer(exampleApp.event, exampleApp.service).StartEventLoop()
+		store := sql_store.New(exampleApp.sqlDB, exampleApp.util.Log)
+		domain := example.New()
+
+		exampleService := example_service.New(store, domain)
+
+		in_memory_consume_event.NewInMemoryExampleEventConsumer(exampleApp.event, exampleService).StartEventLoop()
 
 	}()
 
