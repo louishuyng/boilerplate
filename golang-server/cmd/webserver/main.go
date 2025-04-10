@@ -37,7 +37,7 @@ func main() {
 
 	cmd := makeCMD(server, event, &util, sql)
 
-	RegisterApp(example.NewServerApp(&cmd))
+	RegisterApp(example_server_app.New(&cmd))
 
 	go func() {
 		server.Start()
@@ -46,7 +46,7 @@ func main() {
 	server.WaitForShutdown()
 }
 
-func RegisterApp(app interfaces.App) {
+func RegisterApp(app interfaces.ServerApp) {
 	_ = app.RegisterAPI()
 	_ = app.RegisterDomainEvent()
 }

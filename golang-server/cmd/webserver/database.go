@@ -2,7 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"embed"
 	"fmt"
 	"rz-server/internal/common/interfaces"
 

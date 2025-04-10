@@ -1,18 +1,18 @@
 package mapper
 
 import (
-	"rz-server/internal/app/example/domain"
+	"rz-server/internal/app/example/domain/example"
 	store "rz-server/internal/app/example/infra/store"
 )
 
-func ToDBExample(example domain.Example) store.Example {
+func ToDBExample(entity example.ExampleEntity) store.Example {
 	return store.Example{
-		Name: example.Name,
+		Name: entity.Name,
 	}
 }
 
-func FromDBExample(example store.Example) domain.Example {
-	return domain.Example{
-		Name: example.Name,
+func FromDBExample(data store.Example) example.ExampleEntity {
+	return example.ExampleEntity{
+		Name: data.Name,
 	}
 }

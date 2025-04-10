@@ -1,4 +1,4 @@
-package sql
+package sql_store
 
 import (
 	"context"
@@ -21,7 +21,7 @@ type SqlStore struct {
 	Queries *repository.Queries
 }
 
-func NewSqlStore(db *sql.DB, util interfaces.LogUtil) *SqlStore {
+func New(db *sql.DB, util interfaces.LogUtil) *SqlStore {
 	queries := repository.New(db)
 
 	goose.SetBaseFS(embedMigrations)

@@ -1,5 +1,5 @@
 package domain
 
-type ExampleDomain interface {
+type Example interface {
 	GetID() int
 }
