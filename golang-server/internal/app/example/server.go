@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"net/http"
 	"rz-server/internal/app/example/api"
-	"rz-server/internal/app/example/application/service/example"
+	"rz-server/internal/app/example/application/example"
 	"rz-server/internal/app/example/domain/example"
 	in_memory_consume_event "rz-server/internal/app/example/infra/events/in_memory_consume"
 	sql_store "rz-server/internal/app/example/infra/store/sql"
@@ -39,7 +39,6 @@ func (exampleApp *ServerApp) RegisterAPI() error {
 	})
 
 	exampleService := example_service.New(store, domain)
-
 	example_api.New(
 		exampleApp.server,
 		exampleService,

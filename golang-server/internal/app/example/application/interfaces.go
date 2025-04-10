@@ -1,12 +1,10 @@
 package application
 
-import "rz-server/internal/app/example/application/commands"
-
-type Example struct {
-	ID   int
-	Name string
-}
+import (
+	example_commands "rz-server/internal/app/example/application/example/commands"
+	example_data "rz-server/internal/app/example/application/example/data"
+)
 
 type ExampleService interface {
-	CreateExample(command commands.CreateExampleCommand) (*Example, error)
+	CreateExample(command example_commands.CreateExampleCommand) (*example_data.ExampleData, error)
 }

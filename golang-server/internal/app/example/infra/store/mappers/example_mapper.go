@@ -5,13 +5,13 @@ import (
 	store "rz-server/internal/app/example/infra/store"
 )
 
-func ToDBExample(entity example.ExampleEntity) store.Example {
-	return store.Example{
+func ToDBExample(entity example.ExampleEntity) store.ExampleStoreData {
+	return store.ExampleStoreData{
 		Name: entity.Name,
 	}
 }
 
-func FromDBExample(data store.Example) example.ExampleEntity {
+func FromDBExample(data store.ExampleStoreData) example.ExampleEntity {
 	return example.ExampleEntity{
 		Name: data.Name,
 	}

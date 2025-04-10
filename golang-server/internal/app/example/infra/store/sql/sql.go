@@ -43,14 +43,14 @@ func New(db *sql.DB, util interfaces.LogUtil) *SqlStore {
 	}
 }
 
-func (s *SqlStore) CreateExample(name string) store.Example {
+func (s *SqlStore) CreateExample(name string) store.ExampleStoreData {
 	example, err := s.Queries.CreateExample(context.Background(), name)
 
 	if err != nil {
 		panic(err)
 	}
 
-	return store.Example{
+	return store.ExampleStoreData{
 		ID:   example.ID,
 		Name: example.Name,
 	}

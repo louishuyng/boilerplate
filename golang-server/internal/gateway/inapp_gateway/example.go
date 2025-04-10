@@ -3,7 +3,7 @@ package inapp_gateway_example
 import (
 	"database/sql"
 	example_application "rz-server/internal/app/example/application"
-	example_service "rz-server/internal/app/example/application/service/example"
+	example_service "rz-server/internal/app/example/application/example"
 	"rz-server/internal/app/example/domain/example"
 	sql_store "rz-server/internal/app/example/infra/store/sql"
 	"rz-server/internal/common/interfaces"

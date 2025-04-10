@@ -3,7 +3,7 @@ package example_api
 import (
 	"net/http"
 	"rz-server/internal/app/example/application"
-	"rz-server/internal/app/example/application/commands"
+	example_commands "rz-server/internal/app/example/application/example/commands"
 	"rz-server/internal/common/interfaces"
 )
 
@@ -35,7 +35,7 @@ func (u *ExampleApi) createExample(w http.ResponseWriter, r *http.Request) {
 		"method": r.Method,
 	})
 
-	command := commands.CreateExampleCommand{
+	command := example_commands.CreateExampleCommand{
 		Name: "John",
 	}
 

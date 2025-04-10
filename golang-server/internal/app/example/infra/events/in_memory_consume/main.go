@@ -2,7 +2,7 @@ package in_memory_consume_event
 
 import (
 	"rz-server/internal/app/example/application"
-	"rz-server/internal/app/example/application/commands"
+	example_commands "rz-server/internal/app/example/application/example/commands"
 	"rz-server/internal/app/example/infra/events"
 	"rz-server/internal/common/interfaces"
 	"time"
@@ -44,7 +44,7 @@ func (inMemory *InMemoryExampleEventConsumer) StartEventLoop() {
 }
 
 func (inMemory *InMemoryExampleEventConsumer) HandleExampleCreatedEvent(event events.ExampleCreatedEvent) error {
-	command := commands.CreateExampleCommand{
+	command := example_commands.CreateExampleCommand{
 		Name: event.Name,
 	}
 
