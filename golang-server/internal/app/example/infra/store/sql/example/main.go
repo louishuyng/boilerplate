@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"embed"
 	"rz-server/internal/app/example/infra/store"
+	example_store_data "rz-server/internal/app/example/infra/store/sql/example/data"
 	repository "rz-server/internal/app/example/infra/store/sql/example/repository"
 	"rz-server/internal/common/interfaces"
 
@@ -42,15 +43,12 @@ func New(db *sql.DB, util *interfaces.Util) *ExampleStore {
 	}
 }
 
-func (s *ExampleStore) CreateExample(name string) store.ExampleStoreData {
+func (s *ExampleStore) CreateExample(name string) example_store_data.ExampleStoreData {
 	example, err := s.Queries.CreateExample(context.Background(), name)
 
 	if err != nil {
 		panic(err)
 	}
 
-	return store.ExampleStoreData{
-		ID:   example.ID,
-		Name: example.Name,
-	}
+	return example_store_data.New(example.ID, example.Name)
 }

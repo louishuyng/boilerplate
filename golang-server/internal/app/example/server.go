@@ -36,7 +36,7 @@ func (exampleApp *ServerApp) RegisterAPI() error {
 	})
 
 	example_store := example_sql_store.New(exampleApp.sqlDB, exampleApp.util)
-	example_domain := example.New()
+	example_domain := example.NewEntity()
 	exampleService := example_service.New(example_store, example_domain)
 
 	example_api.New(
@@ -51,7 +51,7 @@ func (exampleApp *ServerApp) RegisterAPI() error {
 func (exampleApp *ServerApp) RegisterDomainEvent() error {
 	go func() {
 		example_store := example_sql_store.New(exampleApp.sqlDB, exampleApp.util)
-		example_domain := example.New()
+		example_domain := example.NewEntity()
 
 		exampleService := example_service.New(example_store, example_domain)
 

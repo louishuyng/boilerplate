@@ -1,12 +1,7 @@
 package store
 
-import "github.com/google/uuid"
-
-type ExampleStoreData struct {
-	ID   uuid.UUID
-	Name string
-}
+import example_store_data "rz-server/internal/app/example/infra/store/sql/example/data"
 
 type ExampleStore interface {
-	CreateExample(name string) ExampleStoreData
+	CreateExample(name string) example_store_data.ExampleStoreData
 }

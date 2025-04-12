@@ -1,21 +1,32 @@
 package example
 
-import domain "rz-server/internal/app/example/domain"
+import (
+	domain "rz-server/internal/app/example/domain"
+
+	"github.com/google/uuid"
+)
 
 type ExampleEntity struct {
-	Id   int
+	Id   uuid.UUID
 	Name string
 }
 
-type Example struct {
+var _ domain.Example = (*ExampleEntity)(nil)
+
+func NewEntity() *ExampleEntity {
+	return &ExampleEntity{}
 }
 
-var _ domain.Example = (*Example)(nil)
-
-func New() *Example {
-	return &Example{}
+func (e *ExampleEntity) Create(
+	Id uuid.UUID,
+	Name string,
+) ExampleEntity {
+	return ExampleEntity{
+		Id:   Id,
+		Name: Name,
+	}
 }
 
-func (d *Example) GetID() int {
+func (d *ExampleEntity) GetID() int {
 	return 0
 }
