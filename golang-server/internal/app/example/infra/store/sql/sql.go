@@ -1,10 +1,8 @@
 package sql_store
 
 import (
-	"context"
 	"database/sql"
 	"embed"
-	"rz-server/internal/app/example/infra/store"
 	"rz-server/internal/app/example/infra/store/sql/repository"
 	"rz-server/internal/common/interfaces"
 
@@ -13,8 +11,6 @@ import (
 
 //go:embed schema/*.sql
 var embedMigrations embed.FS
-
-var _ store.ExampleStore = (*SqlStore)(nil)
 
 type SqlStore struct {
 	Db      *sql.DB
@@ -41,18 +37,4 @@ func New(db *sql.DB, util interfaces.LogUtil) *SqlStore {
 		Db:      db,
 		Queries: queries,
 	}
-}
-
-func (s *SqlStore) CreateExample(name string) store.ExampleStoreData {
-	example, err := s.Queries.CreateExample(context.Background(), name)
-
-	if err != nil {
-		panic(err)
-	}
-
-	return store.ExampleStoreData{
-		ID:   example.ID,
-		Name: example.Name,
-	}
-
 }
