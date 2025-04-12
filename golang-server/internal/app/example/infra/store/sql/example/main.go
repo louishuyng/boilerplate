@@ -2,19 +2,43 @@ package example_sql_store
 
 import (
 	"context"
+	"database/sql"
+	"embed"
 	"rz-server/internal/app/example/infra/store"
-	sql_store "rz-server/internal/app/example/infra/store/sql"
+	repository "rz-server/internal/app/example/infra/store/sql/example/repository"
+	"rz-server/internal/common/interfaces"
+
+	"github.com/pressly/goose/v3"
 )
+
+//go:embed schema/*.sql
+var embedMigrations embed.FS
 
 var _ store.ExampleStore = (*ExampleStore)(nil)
 
 type ExampleStore struct {
-	sql_store.SqlStore
+	Queries *repository.Queries
 }
 
-func NewExampleStore(sqlStore sql_store.SqlStore) *ExampleStore {
+func New(db *sql.DB, util *interfaces.Util) *ExampleStore {
+	queries := repository.New(db)
+
+	goose.SetBaseFS(embedMigrations)
+
+	if err := goose.SetDialect("postgres"); err != nil {
+		util.Log.Error("failed to set goose dialect", map[string]any{
+			"error": err.Error(),
+		})
+	}
+
+	if err := goose.Up(db, "schema"); err != nil {
+		util.Log.Error("failed to run goose migrations", map[string]any{
+			"error": err.Error(),
+		})
+	}
+
 	return &ExampleStore{
-		SqlStore: sqlStore,
+		Queries: queries,
 	}
 }
 

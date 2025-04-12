@@ -8,3 +8,9 @@ import (
 type ExampleService interface {
 	CreateExample(command example_commands.CreateExampleCommand) (*example_data.ExampleData, error)
 }
+
+type TokenService interface {
+}
+
+type AuthService interface {
+}
