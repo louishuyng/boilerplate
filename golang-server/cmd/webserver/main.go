@@ -9,10 +9,10 @@ import (
 
 func main() {
 	log := NewLog()
-	env := newEnvironment()
+	env := NewEnvironment()
 
 	util := interfaces.Util{
-		Log:         NewLog(),
+		Log:         log,
 		Logger:      log.ErrorLogger,
 		Environment: env,
 	}

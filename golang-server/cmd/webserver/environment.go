@@ -13,7 +13,7 @@ var _ interfaces.Environment = (*Environment)(nil)
 type Environment struct {
 }
 
-func newEnvironment() *Environment {
+func NewEnvironment() *Environment {
 	err := godotenv.Load()
 
 	if err != nil {
