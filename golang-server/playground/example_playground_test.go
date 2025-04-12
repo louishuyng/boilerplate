@@ -1,17 +1,17 @@
-package main
+package playground
 
 import (
-	"fmt"
 	example_commands "rz-server/internal/app/example/application/example/commands"
 	playground_setup "rz-server/playground/setup"
+	"testing"
 )
 
-func main() {
+func TestExamplePlayGround(t *testing.T) {
 	service := playground_setup.MakeExampleService()
 
 	_, _ = service.CreateExample(example_commands.CreateExampleCommand{
 		Name: "test",
 	})
 
-	fmt.Println("Hi")
+	t.Log("Hello, playground!")
 }
