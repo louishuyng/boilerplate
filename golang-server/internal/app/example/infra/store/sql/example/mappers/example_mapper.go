@@ -5,10 +5,10 @@ import (
 	example_store_data "rz-server/internal/app/example/infra/store/sql/example/data"
 )
 
-func ToDBExample(entity example.ExampleEntity) example_store_data.ExampleStoreData {
+func ToDBExample(entity example.Entity) example_store_data.Data {
 	return example_store_data.New(entity.Id, entity.Name)
 }
 
-func FromDBExample(data example_store_data.ExampleStoreData) example.ExampleEntity {
-	return example.NewEntity().Create(data.Id, data.Name)
+func FromDBExample(data example_store_data.Data) example.Entity {
+	return example.New().Create(data.Id, data.Name)
 }

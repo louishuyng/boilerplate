@@ -18,7 +18,7 @@ type ExampleGateway struct {
 
 func New(db *sql.DB, util *interfaces.Util) *ExampleGateway {
 	example_store := example_sql_store.New(db, util)
-	example_domain := example.NewEntity()
+	example_domain := example.New()
 
 	exampleService := example_service.New(example_store, example_domain)
 

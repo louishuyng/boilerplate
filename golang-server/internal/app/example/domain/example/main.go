@@ -6,27 +6,27 @@ import (
 	"github.com/google/uuid"
 )
 
-type ExampleEntity struct {
+type Entity struct {
 	Id   uuid.UUID
 	Name string
 }
 
-var _ domain.Example = (*ExampleEntity)(nil)
+var _ domain.Example = (*Entity)(nil)
 
-func NewEntity() *ExampleEntity {
-	return &ExampleEntity{}
+func New() *Entity {
+	return &Entity{}
 }
 
-func (e *ExampleEntity) Create(
+func (e *Entity) Create(
 	Id uuid.UUID,
 	Name string,
-) ExampleEntity {
-	return ExampleEntity{
+) Entity {
+	return Entity{
 		Id:   Id,
 		Name: Name,
 	}
 }
 
-func (d *ExampleEntity) GetID() int {
+func (d *Entity) GetID() int {
 	return 0
 }

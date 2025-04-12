@@ -43,7 +43,7 @@ func New(db *sql.DB, util *interfaces.Util) *ExampleStore {
 	}
 }
 
-func (s *ExampleStore) CreateExample(name string) example_store_data.ExampleStoreData {
+func (s *ExampleStore) CreateExample(name string) example_store_data.Data {
 	example, err := s.Queries.CreateExample(context.Background(), name)
 
 	if err != nil {
