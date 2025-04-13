@@ -5,6 +5,7 @@ import (
 	example_application "rz-server/internal/app/example/application"
 	example_service "rz-server/internal/app/example/application/example"
 	"rz-server/internal/app/example/domain/example"
+	sql_store "rz-server/internal/app/example/infra/store/sql"
 	example_sql_store "rz-server/internal/app/example/infra/store/sql/example"
 	"rz-server/internal/common/interfaces"
 	"rz-server/internal/gateway"
@@ -17,7 +18,9 @@ type ExampleGateway struct {
 }
 
 func New(db *sql.DB, util *interfaces.Util) *ExampleGateway {
-	example_store := example_sql_store.New(db, util)
+	repository := sql_store.NewRepository(db, util)
+
+	example_store := example_sql_store.New(repository)
 	example_domain := example.New()
 
 	exampleService := example_service.New(example_store, example_domain)

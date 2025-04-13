@@ -1,8 +1,8 @@
 version: "2"
 sql:
-  - schema: "internal/app/example/infra/store/sql/example/schema"
-    queries: "internal/app/example/infra/store/sql/example/queries"
+  - schema: "internal/app/example/infra/store/sql/schema"
+    queries: "internal/app/example/infra/store/sql/queries"
     engine: "postgresql"
     gen:
       go:
-        out: "internal/app/example/infra/store/sql/example/repository"
+        out: "internal/app/example/infra/store/sql/repository"
