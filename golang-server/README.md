@@ -55,6 +55,11 @@ However, if you want to run it manually, you can do it by running this command
 
 ## Playground
 
+Perquisite: link .env file to playground folder
+```bash
+ln -s $PWD/.env $PWD/playground/.env
+```
+
 To playground with some application service, we can run the test inside playground folder
 For example, to run the test for `example` application service, we can run this command
 
