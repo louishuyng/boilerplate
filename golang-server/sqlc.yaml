@@ -6,3 +6,10 @@ sql:
     gen:
       go:
         out: "internal/app/example/infra/store/sql/repository"
+
+  - schema: "internal/app/user/infra/store/sql/schema"
+    queries: "internal/app/user/infra/store/sql/queries"
+    engine: "postgresql"
+    gen:
+      go:
+        out: "internal/app/user/infra/store/sql/repository"

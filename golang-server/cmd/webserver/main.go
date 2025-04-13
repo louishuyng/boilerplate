@@ -2,7 +2,7 @@ package main
 
 import (
 	"database/sql"
-	"rz-server/internal/app/example"
+	user_app "rz-server/internal/app/user"
 	"rz-server/internal/common/interfaces"
 	"rz-server/internal/common/message_brokers"
 )
@@ -37,7 +37,7 @@ func main() {
 
 	cmd := makeCMD(server, event, &util, sql)
 
-	RegisterApp(example_server_app.New(&cmd))
+	RegisterApp(user_app.New(&cmd))
 
 	go func() {
 		server.Start()
