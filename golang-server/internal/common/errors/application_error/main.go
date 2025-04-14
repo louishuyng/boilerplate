@@ -2,6 +2,7 @@ package application_error
 
 import (
 	"fmt"
+	"maps"
 	"rz-server/internal/common/interfaces"
 )
 
@@ -14,10 +15,14 @@ type Manager struct {
 var _ interfaces.ApplicationErrorManager = (*Manager)(nil)
 
 func NewManager(domain string, subDomain string) *Manager {
+	registeredCode := make(map[string]*Error)
+
+	maps.Copy(registeredCode, DEFAULT_ERRORS)
+
 	return &Manager{
 		domain:         domain,
 		subDomain:      subDomain,
-		registeredCode: DEFAULT_ERRORS,
+		registeredCode: registeredCode,
 	}
 }
 

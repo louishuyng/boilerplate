@@ -8,6 +8,10 @@ import (
 )
 
 func (u *ExampleService) CreateExample(command example_commands.CreateExampleCommand) (*example_data.ExampleData, interfaces.ApplicationError) {
-	u.store.CreateExample("Hello")
-	return nil, u.errors.New(example_errors.EXAMPLE_NOT_FOUND)
+	data := u.store.CreateExample("Hello")
+
+	return &example_data.ExampleData{
+		ID:   data.Id,
+		Name: data.Name,
+	}, u.errors.New(example_errors.EXAMPLE_NOT_FOUND)
 }

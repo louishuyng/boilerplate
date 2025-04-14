@@ -2,8 +2,10 @@ package example_api
 
 import (
 	"net/http"
+	example_resources "rz-server/internal/app/example/api/example/resources"
 	"rz-server/internal/app/example/application"
 	example_commands "rz-server/internal/app/example/application/example/commands"
+	json_helper "rz-server/internal/common/helpers/json"
 	"rz-server/internal/common/interfaces"
 )
 
@@ -39,14 +41,15 @@ func (u *ExampleApi) createExample(w http.ResponseWriter, r *http.Request) {
 		Name: "John",
 	}
 
-	_, err := u.service.CreateExample(command)
+	data, err := u.service.CreateExample(command)
 
 	if err != nil {
-		w.Write([]byte(err.GetMessage()))
-		w.WriteHeader(http.StatusInternalServerError)
+		json_helper.RespondJsonError(err, w)
 		return
 	}
 
-	w.Write([]byte("Example created"))
-	w.WriteHeader(http.StatusCreated)
+	json_helper.RespondJsonResourceSuccess(
+		example_resources.NewCreateExampleMapper(data),
+		w,
+	)
 }
