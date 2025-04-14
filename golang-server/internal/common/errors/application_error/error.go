@@ -14,7 +14,7 @@ type Error struct {
 	context   map[string]any
 }
 
-var _ interfaces.Error = (*Error)(nil)
+var _ interfaces.ApplicationError = (*Error)(nil)
 
 func NewError(domain string, subDomain string, code int16, errorType ErrorType, message string, args ...any) *Error {
 	return &Error{

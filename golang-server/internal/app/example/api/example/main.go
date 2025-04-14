@@ -39,7 +39,13 @@ func (u *ExampleApi) createExample(w http.ResponseWriter, r *http.Request) {
 		Name: "John",
 	}
 
-	_, _ = u.service.CreateExample(command)
+	_, err := u.service.CreateExample(command)
+
+	if err != nil {
+		w.Write([]byte(err.GetMessage()))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 
 	w.Write([]byte("Example created"))
 	w.WriteHeader(http.StatusCreated)

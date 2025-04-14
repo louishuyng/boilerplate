@@ -6,13 +6,13 @@ import (
 )
 
 type ExampleError struct {
-	interfaces.ApplicationError
+	interfaces.ApplicationErrorManager
 }
 
 func New() *ExampleError {
-	applicationError := application_error.New("example", "example")
+	applicationErrorManager := application_error.NewManager("example", "example")
 
 	return &ExampleError{
-		ApplicationError: applicationError,
+		ApplicationErrorManager: applicationErrorManager,
 	}
 }

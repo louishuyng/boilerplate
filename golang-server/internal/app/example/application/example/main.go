@@ -13,7 +13,7 @@ var _ application.ExampleService = (*ExampleService)(nil)
 type ExampleService struct {
 	store   store.ExampleStore
 	example domain.Example
-	errors  interfaces.ApplicationError
+	errors  interfaces.ApplicationErrorManager
 }
 
 func New(store store.ExampleStore, example domain.Example) *ExampleService {

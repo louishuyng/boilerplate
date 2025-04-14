@@ -1,14 +1,14 @@
 package interfaces
 
-type Error interface {
+type ApplicationError interface {
 	GetKey() string
 	GetMessage() string
 	GetContext() map[string]any
 	GetErrorType() string
 }
 
-type ApplicationError interface {
-	New(code int16, args ...any) Error
+type ApplicationErrorManager interface {
+	New(code int16, args ...any) ApplicationError
 
 	RegisterBusinessError(code int16, message string, args ...any)
 	RegisterValidationError(code int16, message string, args ...any)
