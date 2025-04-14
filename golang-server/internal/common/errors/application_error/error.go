@@ -1,4 +1,4 @@
-package errors
+package application_error
 
 import (
 	"fmt"

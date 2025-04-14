@@ -1,4 +1,4 @@
-package errors
+package application_error
 
 import (
 	"fmt"
@@ -23,7 +23,7 @@ type ApplicationError struct {
 
 var _ interfaces.ApplicationError = (*ApplicationError)(nil)
 
-func NewApplicationError(domain string, subDomain string) *ApplicationError {
+func New(domain string, subDomain string) *ApplicationError {
 	return &ApplicationError{
 		domain:         domain,
 		subDomain:      subDomain,

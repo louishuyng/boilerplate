@@ -1,7 +1,7 @@
 package example_errors
 
 import (
-	"rz-server/internal/common/errors"
+	"rz-server/internal/common/errors/application_error"
 	"rz-server/internal/common/interfaces"
 )
 
@@ -10,7 +10,7 @@ type ExampleError struct {
 }
 
 func New() *ExampleError {
-	applicationError := errors.NewApplicationError("example", "example")
+	applicationError := application_error.New("example", "example")
 
 	return &ExampleError{
 		ApplicationError: applicationError,
