@@ -17,7 +17,7 @@ func NewManager(domain string, subDomain string) *Manager {
 	return &Manager{
 		domain:         domain,
 		subDomain:      subDomain,
-		registeredCode: make(map[string]*Error),
+		registeredCode: DEFAULT_ERRORS,
 	}
 }
 

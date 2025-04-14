@@ -8,4 +8,5 @@ const (
 	InvalidInput    ErrorType = "InvalidInput"
 	NotFound        ErrorType = "NotFound"
 	NotAllowed      ErrorType = "NotAllowed"
+	InternalError   ErrorType = "InternalError"
 )
