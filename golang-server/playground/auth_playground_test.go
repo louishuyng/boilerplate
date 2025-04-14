@@ -5,13 +5,15 @@ import (
 	auth_commands "rz-server/internal/app/user/application/auth/commands"
 	playground_setup "rz-server/playground/setup"
 	"testing"
+
+	"github.com/google/uuid"
 )
 
 func TestAuthPlayGround(t *testing.T) {
 	service := playground_setup.MakeAuthService()
 
 	_, _ = service.Register(auth_commands.RegisterUserCommand{
-		Email:       "test1@test.com",
+		Email:       "test2@test.com",
 		Password:    "password",
 		DisplayName: "test",
 	})
@@ -19,11 +21,28 @@ func TestAuthPlayGround(t *testing.T) {
 	t.Log("Hello, playground!")
 }
 
+func TestAuthRefreshTokenPlayGround(t *testing.T) {
+	service := playground_setup.MakeAuthService()
+
+	authData, _ := service.Login(auth_commands.LoginUserCommand{
+		Email:    "test2@test.com",
+		Password: "password",
+	})
+
+	refreshData, _ := service.RefreshToken(auth_commands.RefreshTokenCommand{
+		RefreshToken: authData.RefreshToken,
+	})
+
+	fmt.Printf("refreshData: %+v\n", refreshData)
+
+	t.Log("Refresh token success")
+}
+
 func TestAuthLoginPlayGround(t *testing.T) {
 	service := playground_setup.MakeAuthService()
 
 	authData, _ := service.Login(auth_commands.LoginUserCommand{
-		Email:    "test1@test.com",
+		Email:    "test2@test.com",
 		Password: "password",
 	})
 
@@ -32,19 +51,16 @@ func TestAuthLoginPlayGround(t *testing.T) {
 	t.Log("Login success")
 }
 
-func TestAuthRefreshTokenPlayGround(t *testing.T) {
+func TestAuthLogoutPlayGround(t *testing.T) {
 	service := playground_setup.MakeAuthService()
 
-	authData, _ := service.Login(auth_commands.LoginUserCommand{
-		Email:    "test1@test.com",
-		Password: "password",
+	err := service.Logout(auth_commands.LogoutUserCommand{
+		UserID: uuid.MustParse("fd0eb9c2-72c8-4c10-b959-df79fe0946eb"),
 	})
 
-	authData, _ = service.RefreshToken(auth_commands.RefreshTokenCommand{
-		RefreshToken: authData.RefreshToken,
-	})
+	if err != nil {
+		t.Errorf("Logout failed: %v", err)
+	}
 
-	fmt.Printf("authData: %+v\n", authData)
-
-	t.Log("Refresh token success")
+	fmt.Printf("Logout success")
 }

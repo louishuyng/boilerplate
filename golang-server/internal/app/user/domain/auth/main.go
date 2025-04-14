@@ -66,10 +66,14 @@ func (e *Entity) ComparePassword(password, hash string) bool {
 	return err == nil
 }
 
-func (e *Entity) ValidateExpired(expiredAt time.Time) (time.Time, error) {
+func (e *Entity) ValidateExpired(expiredAt time.Time) error {
 	if expiredAt.Before(time.Now()) {
-		return time.Time{}, errors.New("token expired")
+		return errors.New("token expired")
 	}
 
-	return time.Now().Add(REFRESH_TOKEN_EXPIRE_AT_AFTER), nil
+	return nil
+}
+
+func (e *Entity) GetExpiredAtAfter() time.Time {
+	return time.Now().Add(REFRESH_TOKEN_EXPIRE_AT_AFTER)
 }

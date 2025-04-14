@@ -8,20 +8,22 @@ package repository
 import (
 	"context"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 const updateRefreshTokenExpiredAt = `-- name: UpdateRefreshTokenExpiredAt :exec
 UPDATE refresh_token
 SET expired_at = $2
-WHERE token = $1
+WHERE id = $1
 `
 
 type UpdateRefreshTokenExpiredAtParams struct {
-	Token     string
+	ID        uuid.UUID
 	ExpiredAt time.Time
 }
 
 func (q *Queries) UpdateRefreshTokenExpiredAt(ctx context.Context, arg UpdateRefreshTokenExpiredAtParams) error {
-	_, err := q.db.ExecContext(ctx, updateRefreshTokenExpiredAt, arg.Token, arg.ExpiredAt)
+	_, err := q.db.ExecContext(ctx, updateRefreshTokenExpiredAt, arg.ID, arg.ExpiredAt)
 	return err
 }

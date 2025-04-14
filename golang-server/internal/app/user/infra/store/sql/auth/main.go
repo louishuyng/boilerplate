@@ -7,6 +7,8 @@ import (
 	auth_store_data "rz-server/internal/app/user/infra/store/sql/auth/data"
 	repository "rz-server/internal/app/user/infra/store/sql/repository"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 var _ store.AuthStore = (*AuthStore)(nil)
@@ -35,9 +37,9 @@ func (s *AuthStore) SaveRefreshToken(body auth_store_data.RefreshTokenBody) auth
 	return auth_store_data.New(auth.ID, auth.UserID, auth.Token, auth.ExpiredAt)
 }
 
-func (s *AuthStore) UpdateRefreshTokenExpiredAt(token string, expiredAt time.Time) error {
+func (s *AuthStore) UpdateRefreshTokenExpiredAt(id uuid.UUID, expiredAt time.Time) error {
 	err := s.Queries.UpdateRefreshTokenExpiredAt(context.Background(), repository.UpdateRefreshTokenExpiredAtParams{
-		Token:     token,
+		ID:        id,
 		ExpiredAt: expiredAt,
 	})
 
@@ -61,4 +63,29 @@ func (s *AuthStore) GetRefreshTokenByToken(token string) *auth_store_data.Data {
 		Token:    auth.Token,
 		ExpireAt: auth.ExpiredAt,
 	}
+}
+
+func (s *AuthStore) GetRefreshTokenByUserID(userID uuid.UUID) *auth_store_data.Data {
+	auth, err := s.Queries.GetRefreshTokenByUserID(context.Background(), userID)
+
+	if err != nil {
+		return nil
+	}
+
+	return &auth_store_data.Data{
+		ID:       auth.ID,
+		UserID:   auth.UserID,
+		Token:    auth.Token,
+		ExpireAt: auth.ExpiredAt,
+	}
+}
+
+func (s *AuthStore) DeleteRefreshTokenByUserID(userID uuid.UUID) error {
+	err := s.Queries.DeleteRefreshTokenByUserID(context.Background(), userID)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

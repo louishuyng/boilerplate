@@ -15,13 +15,13 @@ func (s *AuthService) RefreshToken(command auth_commands.RefreshTokenCommand) (*
 		return nil, errors.New("refresh token not found")
 	}
 
-	expiredAt, err := s.auth.ValidateExpired(refreshTokenData.ExpireAt)
+	err := s.auth.ValidateExpired(refreshTokenData.ExpireAt)
 
 	if err != nil {
 		return nil, err
 	}
 
-	err = s.authStore.UpdateRefreshTokenExpiredAt(refreshToken, expiredAt)
+	err = s.authStore.UpdateRefreshTokenExpiredAt(refreshTokenData.ID, s.auth.GetExpiredAtAfter())
 
 	if err != nil {
 		return nil, err

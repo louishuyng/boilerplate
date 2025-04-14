@@ -9,4 +9,5 @@ type AuthService interface {
 	Register(command auth_commands.RegisterUserCommand) (*auth_data.AuthData, error)
 	Login(command auth_commands.LoginUserCommand) (*auth_data.AuthData, error)
 	RefreshToken(command auth_commands.RefreshTokenCommand) (*auth_data.AuthData, error)
+	Logout(command auth_commands.LogoutUserCommand) error
 }

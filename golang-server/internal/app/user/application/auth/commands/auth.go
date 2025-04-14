@@ -1,5 +1,7 @@
 package auth_commands
 
+import "github.com/google/uuid"
+
 type RegisterUserCommand struct {
 	DisplayName string
 	Email       string
@@ -13,4 +15,8 @@ type LoginUserCommand struct {
 
 type RefreshTokenCommand struct {
 	RefreshToken string
+}
+
+type LogoutUserCommand struct {
+	UserID uuid.UUID
 }
