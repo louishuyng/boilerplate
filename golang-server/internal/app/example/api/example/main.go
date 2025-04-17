@@ -7,6 +7,7 @@ import (
 	example_commands "rz-server/internal/app/example/application/example/commands"
 	json_helper "rz-server/internal/common/helpers/json"
 	"rz-server/internal/common/interfaces"
+	"rz-server/internal/common/middlewares"
 )
 
 type ExampleApi struct {
@@ -24,6 +25,18 @@ func New(
 	u.service = service
 	u.util = util
 	u.server = server
+
+	u.server.RegisterMiddlewares([]func(http.Handler) http.Handler{
+		middlewares.NewLoggingMiddleware(u.util.Log),
+	})
+
+	u.server.RegisterMiddlewares([]func(http.Handler) http.Handler{
+		middlewares.NewAuthorizationMiddleware(
+			func(r *http.Request) bool {
+				return service.ValidateToken(r.Header.Get("Authorization"))
+			},
+		),
+	})
 
 	return u
 }

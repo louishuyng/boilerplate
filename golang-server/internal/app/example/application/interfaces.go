@@ -8,4 +8,5 @@ import (
 
 type ExampleService interface {
 	CreateExample(command example_commands.CreateExampleCommand) (*example_data.ExampleData, interfaces.ApplicationError)
+	ValidateToken(token string) bool
 }
