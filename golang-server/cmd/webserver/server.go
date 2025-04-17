@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"rz-server/cmd/webserver/route"
 	"rz-server/helpers"
 	"rz-server/internal/common/interfaces"
 	"time"
@@ -42,40 +43,14 @@ func NewServer(util *interfaces.Util) *Server {
 	}
 
 	return &Server{
-		router: router,
 		server: server,
 		util:   util,
+		router: router,
 	}
 }
 
-func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	s.router.ServeHTTP(w, r)
-}
-
-func (s *Server) GET(path string, handler http.HandlerFunc) {
-	s.router.HandleFunc(path, handler).Methods("GET")
-}
-
-func (s *Server) POST(path string, handler http.HandlerFunc) {
-	s.router.HandleFunc(path, handler).Methods("POST")
-}
-
-func (s *Server) PUT(path string, handler http.HandlerFunc) {
-	s.router.HandleFunc(path, handler).Methods("PUT")
-}
-
-func (s *Server) DELETE(path string, handler http.HandlerFunc) {
-	s.router.HandleFunc(path, handler).Methods("DELETE")
-}
-
-func (s *Server) RegisterMiddlewares(handlers []func(http.Handler) http.Handler) {
-	s.util.Log.Info("Registering middlewares", map[string]any{
-		"count": len(handlers),
-	})
-
-	for _, handler := range handlers {
-		s.router.Use(handler)
-	}
+func (s *Server) NewRoute() interfaces.Route {
+	return route.New(s.router, s.util)
 }
 
 func (s *Server) Start() {

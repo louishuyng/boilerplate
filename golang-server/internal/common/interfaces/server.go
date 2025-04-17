@@ -2,11 +2,15 @@ package interfaces
 
 import "net/http"
 
-type Server interface {
-	RegisterMiddlewares(handlers []func(http.Handler) http.Handler)
+type Route interface {
+	Use(middlewares ...func(http.Handler) http.Handler)
+	SetPathPrefix(path string)
+	Get(route string, handler http.HandlerFunc)
+	Post(route string, handler http.HandlerFunc)
+	Put(route string, handler http.HandlerFunc)
+	Delete(route string, handler http.HandlerFunc)
+}
 
-	GET(route string, handler http.HandlerFunc)
-	POST(route string, handler http.HandlerFunc)
-	PUT(route string, handler http.HandlerFunc)
-	DELETE(route string, handler http.HandlerFunc)
+type Server interface {
+	NewRoute() Route
 }

@@ -12,6 +12,4 @@ func TestExamplePlayGround(t *testing.T) {
 	_, _ = service.CreateExample(example_commands.CreateExampleCommand{
 		Name: "test",
 	})
-
-	t.Log("Hello, playground!")
 }

@@ -15,7 +15,6 @@ func MakeCMD() interfaces.CMD {
 		Environment: env,
 	}
 
-	server := NewServer(&util)
 	event := message_brokers.NewEventChannel()
 
 	sql, err := NewSQLConnection(SQLSettings{
@@ -34,7 +33,6 @@ func MakeCMD() interfaces.CMD {
 	}
 
 	return interfaces.CMD{
-		Server:       server,
 		ConsumeEvent: event,
 		Util:         &util,
 		SqlDB:        sql,
