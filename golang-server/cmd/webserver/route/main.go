@@ -40,7 +40,7 @@ func (r *Route) Delete(path string, handler http.HandlerFunc) {
 }
 
 func (r *Route) SetPathPrefix(path string) {
-	r.router.PathPrefix(path)
+	r.router = r.router.PathPrefix(path).Subrouter()
 }
 
 func (r *Route) Use(middlewares ...func(http.Handler) http.Handler) {
